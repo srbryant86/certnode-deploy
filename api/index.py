@@ -53,3 +53,42 @@ def gpt():
         }
 
     return jsonify(result)
+
+
+@app.route("/api/audit", methods=["POST"])
+def audit():
+    data = request.get_json()
+    text = data.get("text", "")
+    logic_density = sum(1 for c in text if c.isalpha()) / max(len(text), 1)
+    tier = min(16, max(0, int(logic_density * 16)))
+    audit_report = {
+        "input": text,
+        "logic_density": round(logic_density, 3),
+        "estimated_tier": tier,
+        "length": len(text),
+        "status": "audited",
+    }
+    return jsonify(audit_report)
+
+
+@app.route("/api/compare", methods=["POST"])
+def compare():
+    data = request.get_json()
+    text1 = data.get("text1", "")
+    text2 = data.get("text2", "")
+
+    def score(text):
+        return sum(1 for c in text if c.isalpha()) / max(len(text), 1)
+
+    score1 = score(text1)
+    score2 = score(text2)
+    better = "text1" if score1 > score2 else "text2"
+
+    return jsonify(
+        {
+            "text1_score": round(score1, 3),
+            "text2_score": round(score2, 3),
+            "preferred": better,
+            "status": "compared",
+        }
+    )
