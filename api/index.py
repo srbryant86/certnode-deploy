@@ -49,3 +49,13 @@ def gpt():
     )
 
     return jsonify(result)
+
+
+@app.route("/api/gpt", methods=["POST"])
+def gpt():
+    data = request.get_json()
+    model = data.get("model", "gpt")
+    text = data.get("text", "")
+
+    response = {"model": model, "input": text, "status": "received"}
+    return jsonify(response)
