@@ -124,24 +124,28 @@ def vault():
 
 @app.route("/api/claim", methods=["POST"])
 def claim():
-    data = request.get_json()
-    user_id = data.get("user_id", "anonymous")
-    text = data.get("text", "")
+    try:
+        data = request.get_json(force=True)
+        user_id = data.get("user_id", "anonymous").strip()
+        text = data.get("text", "").strip()
 
-    log = {
-        "user_id": user_id,
-        "text": text,
-        "timestamp": datetime.datetime.utcnow().isoformat(),
-    }
+        if not text:
+            return jsonify({"error": "No text provided"}), 400
 
-    filename = (
-        f"runtime/claims/claim_{user_id}_{datetime.datetime.utcnow().isoformat()}.json"
-    )
-    os.makedirs(os.path.dirname(filename), exist_ok=True)
-    with open(filename, "w") as f:
-        json.dump(log, f, indent=2)
+        timestamp = datetime.datetime.utcnow().isoformat()
+        claim_dir = "runtime/claims"
+        os.makedirs(claim_dir, exist_ok=True)
 
-    return jsonify({"received": True, "user": user_id})
+        filename = os.path.join(claim_dir, f"claim_{user_id}_{timestamp}.json")
+        with open(filename, "w") as f:
+            json.dump(
+                {"user_id": user_id, "text": text, "timestamp": timestamp}, f, indent=2
+            )
+
+        return jsonify({"received": True, "user": user_id, "timestamp": timestamp})
+
+    except Exception as e:
+        return jsonify({"error": str(e), "received": False}), 500
 
 
 @app.route("/api/explain", methods=["POST"])
