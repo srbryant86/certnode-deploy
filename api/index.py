@@ -34,3 +34,18 @@ def validate():
 @app.route("/api/batch", methods=["POST"])
 def batch():
     return jsonify({"batch": "processed"})
+
+
+@app.route("/api/gpt", methods=["POST"])
+def gpt():
+    data = request.get_json()
+    model = data.get("model", "claude")
+    text = data.get("text", "")
+
+    result = certify_agent(text)
+    result["model"] = model
+    result["log"] = (
+        f"/runtime/logs/certify_{datetime.datetime.utcnow().isoformat()}.json"
+    )
+
+    return jsonify(result)
