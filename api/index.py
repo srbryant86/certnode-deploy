@@ -92,3 +92,69 @@ def compare():
             "status": "compared",
         }
     )
+
+
+@app.route("/api/vault", methods=["POST"])
+def vault():
+    data = request.get_json()
+    text = data.get("text", "")
+    model = data.get("model", "unknown")
+    status = data.get("status", "unverified")
+    tier = data.get("tier", 0)
+    confidence = data.get("confidence", 0)
+
+    log = {
+        "text": text,
+        "model": model,
+        "status": status,
+        "tier": tier,
+        "confidence": confidence,
+        "timestamp": datetime.datetime.utcnow().isoformat(),
+    }
+
+    filename = f"runtime/logs/vault_{datetime.datetime.utcnow().isoformat()}.json"
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, "w") as f:
+        json.dump(log, f, indent=2)
+
+    return jsonify({"saved": True, "path": filename})
+
+
+@app.route("/api/claim", methods=["POST"])
+def claim():
+    data = request.get_json()
+    user_id = data.get("user_id", "anonymous")
+    text = data.get("text", "")
+
+    log = {
+        "user_id": user_id,
+        "text": text,
+        "timestamp": datetime.datetime.utcnow().isoformat(),
+    }
+
+    filename = (
+        f"runtime/claims/claim_{user_id}_{datetime.datetime.utcnow().isoformat()}.json"
+    )
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, "w") as f:
+        json.dump(log, f, indent=2)
+
+    return jsonify({"received": True, "user": user_id})
+
+
+@app.route("/api/explain", methods=["POST"])
+def explain():
+    data = request.get_json()
+    text = data.get("text", "")
+    logic_density = sum(1 for c in text if c.isalpha()) / (len(text) + 1)
+    estimated_tier = round(len(text) * logic_density / 20)
+
+    explanation = {
+        "input": text,
+        "logic_density": round(logic_density, 2),
+        "estimated_tier": estimated_tier,
+        "reason": f"Text length and symbol ratio suggest tier {estimated_tier} based on current CertNode logic heuristics.",
+        "status": "explained",
+    }
+
+    return jsonify(explanation)
