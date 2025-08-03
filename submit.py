@@ -3,9 +3,11 @@ def handler(request):
     content = body.get("content", "")
 
     if not content:
-        return {"statusCode": 400, "body": "Missing content"}
+        return {
+            "statusCode": 400,
+            "body": "Missing content"
+        }
 
-    # Simulated audit
     return {
         "statusCode": 200,
         "body": {
