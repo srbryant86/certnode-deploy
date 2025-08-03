@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Local env files
+.env
+
+# Logs and audit traces
+*.log
+*.jsonl
+
+# Archives and packages
+*.zip
+*.tar.gz
+
+# Mac + Windows system files
+.DS_Store
+Thumbs.db
+
+# Test data or temp files
+test_*.json
+*.sqlite3

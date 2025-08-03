@@ -1,0 +1,16 @@
+Subject: 🎉 Welcome to CertNode Pro – Let’s Certify Your Logic
+
+Hi [First Name],
+
+Welcome to CertNode Pro. You're now able to submit up to 50 nonfiction pieces per month for full structural and logical audit.
+
+🔍 Features now unlocked:
+- Tier classification engine (T0–T16)
+- Fallacy detection and valence indexing
+- Claude-compatible audit reports
+
+To get started, visit:
+https://certnode.io/dashboard
+
+Happy certifying,  
+– The CertNode Team

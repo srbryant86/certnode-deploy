@@ -1,8 +1,19 @@
+version: "3.9"
 
-version: '3'
 services:
-  certnode-api:
+  certnode_audit:
     build: .
     ports:
-      - "8080:8080"
-    restart: unless-stopped
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      STRIPE_SECRET_KEY: sk_test_...
+      STRIPE_WEBHOOK_SECRET: whsec_...
+    volumes:
+      - .:/app
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

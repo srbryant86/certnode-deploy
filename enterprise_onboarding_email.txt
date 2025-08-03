@@ -1,0 +1,19 @@
+Subject: 🚀 CertNode Enterprise Access Activated – Vault & ICS Ready
+
+Hi [First Name],
+
+Your CertNode Enterprise account is now live. With unlimited audits and full infrastructure access, you're ready to deploy trust at scale.
+
+🏛️ Your features include:
+- Unlimited audit volume
+- Priority queue and webhook automation
+- ICS hash vault + Manus-compatible capsule
+- Certificate badge for public display
+
+Visit your Enterprise Portal:
+https://certnode.io/enterprise/dashboard
+
+Need integration help? Reply directly to this email.
+
+Certify with confidence,  
+– The CertNode Team
